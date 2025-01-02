@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Click Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8ff;
+        }
+        #game-area {
+            width: 100%;
+            height: 400px;
+            position: relative;
+            background-color: #add8e6;
+            border: 2px solid #000;
+            margin-top: 20px;
+        }
+        .target {
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            border-radius: 50%;
+            position: absolute;
+            cursor: pointer;
+        }
+        #score {
+            font-size: 24px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Click the Target Game</h1>
+    <p>Click on the red circle as many times as you can within 30 seconds!</p>
+    <div id="score">Score: 0</div>
+    <div id="game-area"></div>
+
+    <script>
+        const gameArea = document.getElementById('game-area');
+        const scoreDisplay = document.getElementById('score');
+        let score = 0;
+        let gameInterval;
+
+        function createTarget() {
+            const target = document.createElement('div');
+            target.classList.add('target');
+            
+            const x = Math.random() * (gameArea.offsetWidth - 50);
+            const y = Math.random() * (gameArea.offsetHeight - 50);
+            target.style.left = `${x}px`;
+            target.style.top = `${y}px`;
+
+            target.addEventListener('click', () => {
+                score++;
+                scoreDisplay.textContent = `Score: ${score}`;
+                target.remove();
+            });
+
+            gameArea.appendChild(target);
+
+            setTimeout(() => {
+                if (target.parentElement) target.remove();
+            }, 1000);
+        }
+
+        function startGame() {
+            score = 0;
+            scoreDisplay.textContent = 'Score: 0';
+            gameInterval = setInterval(createTarget, 1000);
+
+            setTimeout(() => {
+                clearInterval(gameInterval);
+                alert(`Game over! Your score is ${score}.`);
+            }, 30000);
+        }
+
+        startGame();
+    </script>
+</body>
+</html>
